@@ -171,10 +171,7 @@ class MCNPCellCard(CellCard):
             if idx == len(cell_description): break
 
         self.cell_interpreted = cell_description  
-        #print(self.cell_id) 
-        #print(self.cell_interpreted) 
-        #logging.debug("%s\n", "Generalised cell card " + ''.join([str(i) for i in self.cell_interpreted]))
-
+        
         return
 
     # generally spaceify the text so that between each item
@@ -186,7 +183,6 @@ class MCNPCellCard(CellCard):
     # given a valid keyword and string return the value of the
     # keyword
     def __get_keyword_value(self,keyword,string):
-        #regex = re.regex=re.compile("("+keyword+") ?= ?[1-9][0-9]*") 
         regex = re.regex=re.compile("("+keyword+") ?= ?(?=.)([+-]?([0-9]*)(\.([0-9]+))?)")
         result = regex.search(string)[0]
         return result.split(" ")[2] #string[offset:end]  

@@ -814,15 +814,19 @@ class MCNPInput(InputDeck):
 
     # set the boundary conditions
     def __apply_boundary_conditions(self):
-        
+
+        for particle in self.importance_list:
+            importances = self.importance_list[particle].split()
+            for idx,value in enumerate(importances):
+                # TODO this needs to be multi particle
+                self.cell_list[idx].cell_importance = float(value)
         # apply the importances to cells 
-        if len(self.importance_list) != 0:
+        #if len(self.importance_list) != 0:
             # TODO make this loop apply to multiple particle
             # types but for now just do neutrons
-            if len(self.importance_list[ParticleNames["NEUTRON"]]) != 0:
-                importances = self.importance_list[ParticleNames["NEUTRON"]].split()
-                for idx,value in enumerate(importances):
-                    self.cell_list[idx].cell_importance = float(value)
+         #   if len(self.importance_list[ParticleNames["NEUTRON"]]) != 0:
+          #      importances = self.importance_list[ParticleNames["NEUTRON"]].split()
+            
 
         # loop over the cells and if the cell has 
         # importance 0, all the sufaces get boundary
@@ -837,8 +841,10 @@ class MCNPInput(InputDeck):
     def __get_surface_cards(self,idx):
         while True:
             surf_line = strip_dollar_comments(self.file_lines[idx])
+            match = re.match('\s+\r',surf_line)
+
             if surf_line == "\n":
-                logging.debug('%s',"found end of cell cards at line " + str(idx))
+                logging.debug('%s',"found end of surface cards at line " + str(idx))
                 idx += 1
                 break
 
